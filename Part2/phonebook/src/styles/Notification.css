@@ -1,0 +1,17 @@
+.alert {
+    color: #008000;
+    background: #d3d3d3;
+    padding: 10px;
+    border: 3px solid #008000;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.error {
+    color: #ff0000;
+    background: #d3d3d3;
+    padding: 10px;
+    border: 3px solid #ff0000;
+    border-radius: 6px;
+    text-align: center;
+}
