@@ -25,13 +25,16 @@ test('POST requests work', async () => {
         likes: 10
     })
 
-    const initCount = Blog.find({})
+    const initCount = Blog.find({}).count()
+    let postID = 0
     await newPost
             .save()
             .then((result) => {
-                const endCount = Blog.find({})
-                console.log(result);
-                Blog.deleteOne({ id: result._id })
-                expect(initCount === (endCount - 1))
+                postID = result._id
             })
+
+    const endCount = await Blog.find({}).count()
+
+    Blog.deleteOne({ _id: postID })
+    expect(initCount === (endCount - 1))
 })
