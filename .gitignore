@@ -1,2 +1,3 @@
 *.env
 Part3
+node_modules/
