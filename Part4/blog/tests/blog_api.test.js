@@ -37,14 +37,14 @@ test('POST requests work', async () => {
 
     const initCount = await Blog.find({}).count()
     let postID = 0
-    await newPost
-            .save()
+    await api
+            .post('/api/blogs')
+            .send(newPost)
             .then((blog) => {
                 postID = blog._id
             })
 
     let endCount = await Blog.find({}).count()
-    console.log(`End count ${typeof initCount}`);
     expect(initCount).toBe(endCount - 1)
 })
 
@@ -61,4 +61,16 @@ test('likes defaults to 0', async() => {
             console.log(blog.likes);
             expect(blog.likes).toBe(0)
         })
+})
+
+test('title and url are missing', async() => {
+    const newPost = {
+        author: "System2",
+        likes: 3
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newPost)
+        .expect(400)
 })
