@@ -25,16 +25,29 @@ test('POST requests work', async () => {
         likes: 10
     })
 
-    const initCount = Blog.find({}).count()
+    const initCount = await Blog.find({}).count()
     let postID = 0
     await newPost
             .save()
-            .then((result) => {
-                postID = result._id
+            .then((blog) => {
+                postID = blog._id
             })
 
-    const endCount = await Blog.find({}).count()
+    let endCount = await Blog.find({}).count()
+    console.log(`End count ${typeof initCount}`);
+    expect(initCount).toBe(endCount - 1)
+})
 
-    Blog.deleteOne({ _id: postID })
-    expect(initCount === (endCount - 1))
+test('likes defaults to 0', async() => {
+    const newPost = new Blog({
+        title: "Likes Test",
+        author: "System",
+        url: "www.testURL.com"
+    })
+
+    await newPost
+        .save()
+        .then((blog) => {
+            expect(blog.likes).toBe(0)
+        })
 })
