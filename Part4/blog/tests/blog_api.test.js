@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
-const helper = require('../utils/list_helper')
+const helper = require('./test_helper')
 
 const Blog = require('../models/blog')
 
@@ -28,24 +28,22 @@ test('the id variable exists', async () => {
 })
 
 test('POST requests work', async () => {
-    const newPost = new Blog({
-        title: "Test",
+    const initCount = await Blog.find({})
+
+    const newPost = {
+        title: "POST Test",
         author: "System",
         url: "www.testURL.com",
         likes: 10
-    })
+    }
 
-    const initCount = await Blog.find({}).count()
-    let postID = 0
     await api
-            .post('/api/blogs')
-            .send(newPost)
-            .then((blog) => {
-                postID = blog._id
-            })
+        .post('/api/blogs')
+        .send(newPost)
 
-    let endCount = await Blog.find({}).count()
-    expect(initCount).toBe(endCount - 1)
+    const endCount = await Blog.find({})
+    console.log(`Count ${endCount.length - 1}`);
+    expect(initCount.length).toBe(endCount.length - 1)
 })
 
 test('likes defaults to 0', async() => {
@@ -73,4 +71,8 @@ test('title and url are missing', async() => {
         .post('/api/blogs')
         .send(newPost)
         .expect(400)
+})
+
+afterAll(() => {
+    mongoose.connection.close()
 })
