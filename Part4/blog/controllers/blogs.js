@@ -1,4 +1,5 @@
 const blogRouter = require('express').Router()
+const e = require('express')
 const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
@@ -65,8 +66,27 @@ blogRouter.put('/:id', async (request, response) => {
 })
 
 blogRouter.delete('/:id', async (request, response) => {
-    await Blog.findByIdAndRemove(request.params.id)
-    response.status(204).end()
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+
+    if(!request.token || !decodedToken) {
+        return response.status(401).json({error: "token missing or invalid"})
+    }
+
+    const blog = Blog.findById(request.params.id)
+    const userid = decodedToken.id
+    
+    if ( blog.user.toString() === userid.toString() ) {
+        await blog.remove()
+        response
+            .status(204)
+            .end()
+    } else {
+        response
+            .status(401)
+            .json({
+                error: "you don't have permission to perform the requested action"
+            })
+    }
 })
 
 module.exports = blogRouter
