@@ -1,23 +1,41 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
+const jwt = require('jsonwebtoken')
 const app = require('../app')
 const api = supertest(app)
 const helper = require('./test_helper')
 
 const Blog = require('../models/blog')
+const User = require('../models/user')
+
+let token
+let testUser
 
 beforeEach(async () => {
     await Blog.deleteMany({})
+    await User.deleteMany({})
+
+    testUser = await new User({
+        username: "system",
+        name: "system",
+        password: "password"
+    }).save()
+    const userForToken = { username: testUser.username, id: testUser.id }
+    token = jwt.sign(userForToken, process.env.SECRET)
 
     const blogObjects = helper.initialData
         .map(blog => new Blog(blog))
-    const promiseArray = blogObjects.map(blog => blog.save())
+    const promiseArray = blogObjects.map(blog => {
+        blog.user = testUser.id
+        return blog.save()
+    })
     await Promise.all(promiseArray)
 })
 
 test('blogs are returned as json', async () => {
     await api
         .get('/api/blogs')
+        .set('Authorization', `bearer ${token}`)
         .expect(200)
         .expect('Content-Type', /application\/json/)
 })
@@ -34,12 +52,14 @@ test('POST requests work', async () => {
         title: "POST Test",
         author: "System",
         url: "www.testURL.com",
-        likes: 10
+        likes: 10,
+        user: testUser.id
     }
 
     await api
         .post('/api/blogs')
         .send(newPost)
+        .set('Authorization', `bearer ${token}`)
 
     const endCount = await Blog.find({})
     console.log(`Count ${endCount.length - 1}`);
@@ -50,7 +70,8 @@ test('likes defaults to 0', async() => {
     const newPost = new Blog({
         title: "Likes Test",
         author: "System",
-        url: "www.testURL.com"
+        url: "www.testURL.com",
+        user: testUser.id
     })
 
     await newPost
@@ -70,6 +91,7 @@ test('title and url are missing', async() => {
     await api
         .post('/api/blogs')
         .send(newPost)
+        .set('Authorization', `bearer ${token}`)
         .expect(400)
 })
 

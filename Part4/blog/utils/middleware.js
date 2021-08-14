@@ -29,7 +29,6 @@ const errorHandler = (error, request, response, next) => {
 const tokenExtractor = (request, response, next) => {
     const authorization = request.get('authorization')
     if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-        console.log("I'm here");
         request['token'] = authorization.substring(7)
     }
 
@@ -37,17 +36,18 @@ const tokenExtractor = (request, response, next) => {
 }
 
 const userExtractor = async (request, response, next) => {
-    const token = (request.token)
-    console.log(`${token}`);
-    console.log(`--- process ${process.env.SECRET} ---`);
-    const decodedToken = jwt.verify(token, process.env.SECRET)
-    console.log(typeof decodedToken.id);
+    try {
+      const token = (request.token)
+      const decodedToken = jwt.verify(token, process.env.SECRET)
 
-    if(!token || !decodedToken) {
-        return response.status(401).json({error: "token missing or invalid"})
+      if(!token || !decodedToken) {
+          return response.status(401).json({error: "token missing or invalid"})
+      }
+
+      request['user'] = await User.findById(decodedToken.id)
+    } catch (error) {
+      next(error)
     }
-
-    request['user'] = await User.findById(decodedToken.id)
 
     next()
 }

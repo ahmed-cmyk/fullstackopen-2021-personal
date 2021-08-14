@@ -1,3 +1,4 @@
+const helper = require('./test_helper')
 const listHelper = require('../utils/list_helper')
 
 test('dummy returns one', () => {
@@ -26,7 +27,7 @@ describe('total likes', () => {
 })
 
 describe('extra tests', () => {
-    const blogs = listHelper.initialData
+    const blogs = helper.initialData
 
     test('find blog with highest likes, in array with one definite answer', () => {
         const result = listHelper.favoriteBlog(blogs)
