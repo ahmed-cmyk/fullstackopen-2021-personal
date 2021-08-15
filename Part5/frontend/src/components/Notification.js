@@ -1,13 +1,11 @@
-import react, { useState } from 'react'
-
 const Alert = ({ notification }) => {
-    if (notification === null) {
+    if (notification.message === null) {
         return null
     }
 
     return (
-        <div>
-            {notification}
+        <div className={`notification ${ notification.type === 'error' ? 'error' : 'info' }`}>
+            {notification.message}
         </div>
     )
 }

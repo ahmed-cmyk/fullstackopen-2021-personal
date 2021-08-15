@@ -6,7 +6,10 @@ import blogService from './services/blogs'
 
 const App = () => {
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState(null)
+  const [notification, setNotification] = useState({
+    message: null,
+    type: null
+  })
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
@@ -22,8 +25,16 @@ const App = () => {
     setUser(credentials)
   }
 
-  const sendNotification = message => {
-    setNotification(message)
+  const sendNotification = notification => {
+    setNotification(notification)
+    setTimeout(() => {
+      setNotification({ message: null, type: null })
+    }, 5000)
+  }
+
+  const handleLogout = event => {
+    window.localStorage.removeItem('loggedBlogAppUser')
+    setUser(null)
   }
 
   return (
@@ -33,8 +44,7 @@ const App = () => {
       {user === null ?
         <LoginForm addUser={addUser} sendNotification={sendNotification} /> :
         <div>
-          <h3> Hello, {user.username}</h3>
-          <Blogs />
+          <Blogs user={user} handleLogout={handleLogout} />
         </div>
       }
     </div>

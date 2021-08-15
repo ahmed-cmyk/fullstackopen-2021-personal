@@ -8,35 +8,22 @@ const Login = ({ addUser, sendNotification }) => {
 
     const handleLogin = async (event) => {
         event.preventDefault()
+        try {
+            const user = await loginService.login({
+                username, password
+            })
 
-        const user = await loginService.login({
-            username, password
-        })
-
-        window.localStorage.setItem(
-            'loggedBlogAppUser', JSON.stringify(user)
-        )
-        addUser(user)
-        blogService.setToken(user.token)
-        sendNotification("Logged In")
-        setUsername('')
-        setPassword('')
-
-        // try {
-        //     const user = await loginService.login({
-        //         username, password
-        //     })
-
-        //     window.localStorage.setItem(
-        //         'loggedBlogAppUser', JSON.stringify(user)
-        //     )
-        //     addUser(user)
-        //     sendNotification("Logged In")
-        //     setUsername('')
-        //     setPassword('')
-        // } catch (exception) {
-        //     console.log('Wrong credentials');
-        // }
+            window.localStorage.setItem(
+                'loggedBlogAppUser', JSON.stringify(user)
+            )
+            addUser(user)
+            blogService.setToken(user.token)
+            sendNotification({ type: 'info', message: 'Logged in' })
+            setUsername('')
+            setPassword('')
+        } catch (exception) {
+            sendNotification({ type: 'error', message: 'incorrect details' })
+        }
     }
 
     return (
