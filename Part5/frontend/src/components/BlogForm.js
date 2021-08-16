@@ -24,6 +24,9 @@ const BlogForm = ({ user, addBlog, sendNotification }) => {
                 type: 'info',
                 message: `a new blog "${blog.title}" by ${user.username} added`
             })
+            setTitle('')
+            setAuthor('')
+            setUrl('')
         } catch(exception) {
             sendNotification({
                 type: 'error',
