@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Blog from './Blog'
 import BlogForm from './BlogForm'
+import Togglable from './Togglable';
 import blogService from '../services/blogs'
 
 const Blogs = ({ user, handleLogout, sendNotification }) => {
     const [blogs, setBlogs] = useState([])
+
+    const blogFormRef = useRef()
 
     useEffect(() => {
         blogService
@@ -16,6 +19,7 @@ const Blogs = ({ user, handleLogout, sendNotification }) => {
 
     const addBlog = blog => {
         setBlogs(blogs.concat(blog))
+        blogFormRef.current.toggleVisibility()
     }
 
     return (
@@ -25,7 +29,9 @@ const Blogs = ({ user, handleLogout, sendNotification }) => {
                 {user.username} logged in
                 <button type="submit">logout</button>
             </form>
-            <BlogForm user={user} addBlog={addBlog} sendNotification={sendNotification} />
+            <Togglable buttonLabel="create new blog" ref={blogFormRef}>
+                <BlogForm user={user} addBlog={addBlog} sendNotification={sendNotification} />
+            </Togglable>
             {blogs.map(blog =>
                 <Blog key={blog.id} blog={blog} />
             )}
