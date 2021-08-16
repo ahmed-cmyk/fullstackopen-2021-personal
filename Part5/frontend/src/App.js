@@ -32,7 +32,7 @@ const App = () => {
     }, 5000)
   }
 
-  const handleLogout = event => {
+  const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogAppUser')
     setUser(null)
   }
@@ -44,7 +44,7 @@ const App = () => {
       {user === null ?
         <LoginForm addUser={addUser} sendNotification={sendNotification} /> :
         <div>
-          <Blogs user={user} handleLogout={handleLogout} />
+          <Blogs user={user} handleLogout={handleLogout} sendNotification={sendNotification} />
         </div>
       }
     </div>

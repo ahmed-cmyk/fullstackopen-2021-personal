@@ -22,7 +22,7 @@ const Login = ({ addUser, sendNotification }) => {
             setUsername('')
             setPassword('')
         } catch (exception) {
-            sendNotification({ type: 'error', message: 'incorrect details' })
+            sendNotification({ type: 'error', message: 'wrong username or password' })
         }
     }
 
