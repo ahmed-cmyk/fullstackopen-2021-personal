@@ -29,7 +29,7 @@ const Blogs = ({ user, handleLogout, sendNotification }) => {
                 {user.username} logged in
                 <button type="submit">logout</button>
             </form>
-            <Togglable buttonLabel="create new blog" ref={blogFormRef}>
+            <Togglable buttonLabel="create new blog" hideButtonLabel="cancel" ref={blogFormRef}>
                 <BlogForm user={user} addBlog={addBlog} sendNotification={sendNotification} />
             </Togglable>
             {blogs.map(blog =>

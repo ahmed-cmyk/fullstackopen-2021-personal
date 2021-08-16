@@ -1,5 +1,5 @@
 h2 {
-    color: green;
+    color: rgb(73, 109, 226);
 }
 
 .notification {
@@ -17,4 +17,11 @@ h2 {
 .error {
     color: red;
     border: 5px solid red;
+}
+
+.blog-list {
+    padding: 10px 3px;
+    border: 1px solid black;
+    border-radius: 3px;
+    margin: 5px 0;
 }
