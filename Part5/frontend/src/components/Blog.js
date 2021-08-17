@@ -1,17 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Togglable from './Togglable'
 
-const Blog = ({ blog, updateBlog }) => {
-  const incLikes = () => {
+const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
+  const userAdded = user.username === blog.user.username 
+  const addedByUser = { display: userAdded ? '' : 'none' }
+
+  const handleLikeInc = () => {
     const likes = (blog.likes) + 1
 
     const updatedBlog = {
       ...blog,
       likes
     }
-    console.log(updatedBlog);
 
     updateBlog(updatedBlog, blog.id)
+  }
+
+  const handleDelete = () => {
+    deleteBlog(blog, blog.id)
   }
 
   return (
@@ -21,9 +27,10 @@ const Blog = ({ blog, updateBlog }) => {
         <div>{blog.url}</div>
         <div>
           {blog.likes}
-          <button onClick={incLikes}>like</button>
+          <button onClick={handleLikeInc}>like</button>
         </div>
         <div>{blog.user.username}</div>
+        <button style={addedByUser} onClick={handleDelete}>remove</button>
       </Togglable>
     </div>  
   )

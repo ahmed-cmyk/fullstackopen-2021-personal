@@ -60,20 +60,30 @@ blogRouter.put('/:id', async (request, response) => {
 })
 
 blogRouter.delete('/:id', async (request, response) => {
-    const user = request.user
-    const blog = Blog.findById(request.params.id)
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    const blog = await Blog.findById(request.params.id)
     
-    if ( blog.user.toString() === user._id.toString() ) {
-        await blog.remove()
-        response
-            .status(204)
-            .end()
-    } else {
-        response
-            .status(401)
-            .json({
-                error: "you don't have permission to perform the requested action"
-            })
+    if (!request.token || !decodedToken.id) {
+        return response.status(401).json({
+            error: 'token missing or invalid'
+        })
+    }
+
+    try {
+        if ( blog.user.toString() === decodedToken.id.toString() ) {
+            await blog.remove()
+            response
+                .status(204)
+                .end()
+        } else {
+            response
+                .status(401)
+                .json({
+                    error: "you don't have permission to perform the requested action"
+                })
+        }
+    } catch (exception) {
+        next(exception)
     }
 })
 
