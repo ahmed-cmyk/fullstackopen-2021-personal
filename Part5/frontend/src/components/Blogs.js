@@ -10,11 +10,11 @@ const Blogs = ({ user, handleLogout, sendNotification }) => {
     const blogFormRef = useRef()
 
     useEffect(() => {
-        blogService
-          .getAll()
-          .then(initialBlogs => {
-            setBlogs(initialBlogs)
-        })
+        const getBlogs = async () => {
+            const returnedBlogs = await blogService.getAll()
+            setBlogs(sortBlogs(returnedBlogs))
+        }
+        getBlogs()
     }, [])
 
     const addBlog = (blog) => {
@@ -26,12 +26,18 @@ const Blogs = ({ user, handleLogout, sendNotification }) => {
         return(blogs.map(blog => blog.id === updatedBlog.id ? updatedBlog : blog))
     }
 
+    const sortBlogs = (unsortedBlogs) => {
+        const sortedBlogs = unsortedBlogs.sort((a, b) => b.likes - a.likes)
+
+        return sortedBlogs
+    }
+
     const updateBlog = async (blog, id) => {
         const updatedBlog = await blogService.update(blog, id)
         console.log(updatedBlog);
         const updatedBlogs = findAndUpdateBlog(updatedBlog)
 
-        setBlogs(updatedBlogs)
+        setBlogs(sortBlogs(updatedBlogs))
     }
 
     return (
