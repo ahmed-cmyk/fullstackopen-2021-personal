@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Togglable from './Togglable'
 
 const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
-  const userAdded = user.username === blog.user.username 
+  const userAdded = user.username === blog.user.username
   const addedByUser = { display: userAdded ? '' : 'none' }
 
   const handleLikeInc = () => {
@@ -32,7 +32,7 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
         <div>{blog.user.username}</div>
         <button style={addedByUser} onClick={handleDelete}>remove</button>
       </Togglable>
-    </div>  
+    </div>
   )
 }
 

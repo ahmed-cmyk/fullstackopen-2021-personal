@@ -36,7 +36,7 @@ const update = async (updatedBlog, id) => {
 const deleteBlog = async (id) => {
   const config = setConfig()
   const blogUrl = baseUrl + `/${id}`
-  
+
   const response = await axios.delete(blogUrl, config)
   return response.status
 }

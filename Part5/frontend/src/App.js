@@ -21,7 +21,6 @@ const App = () => {
   }, [])
 
   const addUser = credentials => {
-    console.log(credentials);
     setUser(credentials)
   }
 
