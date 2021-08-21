@@ -1,46 +1,33 @@
 import React, { useState } from 'react'
-import blogService from '../services/blogs'
 
-const BlogForm = ({ user, addBlog, sendNotification }) => {
+const BlogForm = ({ user, addBlog }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
   const createBlog = async (event) => {
     event.preventDefault()
-
-    try {
-      const newBlog = {
-        title,
-        author,
-        user,
-        url,
-        likes: 0
-      }
-
-      const blog = await blogService.create(newBlog)
-      addBlog(blog)
-      sendNotification({
-        type: 'info',
-        message: `a new blog "${blog.title}" by ${user.username} added`
-      })
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-    } catch(exception) {
-      sendNotification({
-        type: 'error',
-        message: 'Error occured. Please try again'
-      })
+    const newBlog = {
+      title,
+      author,
+      user,
+      url,
+      likes: 0
     }
+
+    addBlog(newBlog)
+    setTitle('')
+    setAuthor('')
+    setUrl('')
   }
 
   return (
-    <form onSubmit={createBlog}>
+    <form id="blogForm" onSubmit={createBlog}>
       <h2>create</h2>
       <div>
                 title:
         <input
+          id="title"
           type="text"
           value={title}
           name="Title"
@@ -50,6 +37,7 @@ const BlogForm = ({ user, addBlog, sendNotification }) => {
       <div>
                 author:
         <input
+          id="author"
           type="text"
           value={author}
           name="Author"
@@ -59,13 +47,14 @@ const BlogForm = ({ user, addBlog, sendNotification }) => {
       <div>
                 url:
         <input
+          id="url"
           type="text"
           value={url}
           name="Url"
           onChange={({ target }) => setUrl(target.value)}
         />
       </div>
-      <button type="submit">create</button>
+      <button className=".submitButton" type="submit">create</button>
     </form>
   )
 }

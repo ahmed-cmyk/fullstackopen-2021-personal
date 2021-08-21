@@ -17,9 +17,21 @@ const Blogs = ({ user, handleLogout, sendNotification }) => {
     getBlogs()
   }, [])
 
-  const addBlog = (blog) => {
-    setBlogs(blogs.concat(blog))
-    blogFormRef.current.toggleVisibility()
+  const addBlog = async (newBlog) => {
+    try {
+      const blog = await blogService.create(newBlog)
+      sendNotification({
+        type: 'info',
+        message: `a new blog "${blog.title}" by ${user.username} added`
+      })
+      setBlogs(blogs.concat(blog))
+      blogFormRef.current.toggleVisibility()
+    } catch(exception) {
+      sendNotification({
+        type: 'error',
+        message: 'Error occured. Please try again'
+      })
+    }
   }
 
   const findAndUpdateBlog = (updatedBlog) => {
@@ -68,7 +80,7 @@ const Blogs = ({ user, handleLogout, sendNotification }) => {
         {user.username} logged in
         <button type="submit">logout</button>
       </form>
-      <Togglable buttonLabel="create new blog" hideButtonLabel="cancel" ref={blogFormRef}>
+      <Togglable buttonLabel="create new blog" hideButtonLabel="cancel" ref={blogFormRef} class="blogForm">
         <BlogForm user={user} addBlog={addBlog} sendNotification={sendNotification} />
       </Togglable>
       {blogs.map(blog =>

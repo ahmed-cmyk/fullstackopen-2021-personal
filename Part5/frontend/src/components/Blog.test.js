@@ -1,6 +1,5 @@
 import React from 'react'
 import { render, fireEvent } from '@testing-library/react'
-import { prettyDOM } from '@testing-library/dom'
 import '@testing-library/jest-dom/extend-expect'
 import Blog from './Blog'
 
@@ -29,32 +28,34 @@ beforeEach(() => {
   )
 })
 
-test('title and author are rendered by default', () => {
-  const title = component.container.querySelector('.blogTitle')
-  const author = component.container.querySelector('.blogAuthor')
+describe('Blog tests', () => {
+  test('title and author are rendered by default', () => {
+    const title = component.container.querySelector('.blogTitle')
+    const author = component.container.querySelector('.blogAuthor')
 
-  // Likes and URL are defined inside the expanded details class
-  const expandedDetails = component.container.querySelector('.blogExpDetails')
+    // Likes and URL are defined inside the expanded details class
+    const expandedDetails = component.container.querySelector('.blogExpDetails')
 
-  expect(title).not.toHaveStyle('display: none')
-  expect(author).not.toHaveStyle('display: none')
-  expect(expandedDetails).toHaveStyle('display: none')
-})
+    expect(title).not.toHaveStyle('display: none')
+    expect(author).not.toHaveStyle('display: none')
+    expect(expandedDetails).toHaveStyle('display: none')
+  })
 
-test('Clicking "view" displays the url and number of likes', () => {
-  const showButton = component.getByText('view')
-  fireEvent.click(showButton)
+  test('Clicking "view" displays the url and number of likes', () => {
+    const showButton = component.getByText('view')
+    fireEvent.click(showButton)
 
-  // Likes and URL are defined inside the expanded details class
-  const expandedDetails = component.container.querySelector('.blogExpDetails')
+    // Likes and URL are defined inside the expanded details class
+    const expandedDetails = component.container.querySelector('.blogExpDetails')
 
-  expect(expandedDetails).not.toHaveStyle('display: none')
-})
+    expect(expandedDetails).not.toHaveStyle('display: none')
+  })
 
-test('Clicking "like" twice calls handler twice', () => {
-  const likeButton = component.container.querySelector('.blogLikes_button')
-  fireEvent.click(likeButton)
-  fireEvent.click(likeButton)
+  test('Clicking "like" twice calls handler twice', () => {
+    const likeButton = component.container.querySelector('.blogLikes_button')
+    fireEvent.click(likeButton)
+    fireEvent.click(likeButton)
 
-  expect(mockHandlerUpdate.mock.calls).toHaveLength(2)
+    expect(mockHandlerUpdate.mock.calls).toHaveLength(2)
+  })
 })
