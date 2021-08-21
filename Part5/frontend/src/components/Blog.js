@@ -5,7 +5,7 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
   const userAdded = user.username === blog.user.username
   const addedByUser = { display: userAdded ? '' : 'none' }
 
-  const handleLikeInc = () => {
+  const LikesHandler = () => {
     const likes = (blog.likes) + 1
 
     const updatedBlog = {
@@ -22,12 +22,15 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
 
   return (
     <div className="blog-list">
-      {blog.title} {blog.author}
-      <Togglable buttonLabel="view" hideButtonLabel="hide">
-        <div>{blog.url}</div>
-        <div>
+      <div>
+        <span className="blogTitle">{blog.title}</span>
+        <span className="blogAuthor">{blog.author}</span>
+      </div>
+      <Togglable buttonLabel="view" hideButtonLabel="hide" class="blogExpDetails">
+        <div className="blogUrl">{blog.url}</div>
+        <div className="blogLikes">
           {blog.likes}
-          <button onClick={handleLikeInc}>like</button>
+          <button className="blogLikes_button" onClick={LikesHandler}>like</button>
         </div>
         <div>{blog.user.username}</div>
         <button style={addedByUser} onClick={handleDelete}>remove</button>
