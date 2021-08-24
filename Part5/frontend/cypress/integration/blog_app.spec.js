@@ -25,7 +25,26 @@ describe('Blog app', function() {
             cy.get('#password').type('notpassword')
             cy.get('#login-button').click()
 
-            cy.contains('wrong username or password')
+            cy.get('.error')
+              .should('contain', 'wrong username or password')
+              .and('have.css', 'color', 'rgb(255, 0, 0)')
+        })
+    })
+
+    describe('When logged in', function() {
+        beforeEach(function() {
+            cy.login({ username: 'root', password: 'password' })
+        })
+
+        it('A blog can be created', function() {
+            cy.createBlog({
+                title: 'Cypress test blog',
+                author: 'Cypress',
+                url: 'www.example.com',
+                likes: 10
+            })
+
+            cy.contains('Cypress test blog')
         })
     })
 })
