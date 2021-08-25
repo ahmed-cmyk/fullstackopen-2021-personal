@@ -46,5 +46,54 @@ describe('Blog app', function() {
 
             cy.contains('Cypress test blog')
         })
+
+        describe('Blog exists', function() {
+            beforeEach(function() {
+                cy.createBlog({
+                    title: 'Cypress test blog',
+                    author: 'Cypress',
+                    url: 'www.example.com',
+                    likes: 10
+                })
+            })
+
+            it('You can like a blog', function() {
+                cy.contains('view').click()
+
+                cy.get('.blogLikes_number').as('likes')
+                cy.get('.blogLikes_button').click()
+
+                cy.get('@likes').should('contain', 11)
+            })
+
+            it('User can delete blogs they create', function() {
+                cy.contains('view').click()
+                cy.get('#delete_button').click()
+            })
+        })
+
+        describe('Another user creates a blog', function() {
+            beforeEach(function() {
+                cy.request('POST', 'http://localhost:3003/api/users', { username: 'root2', password: 'password' })
+                cy.login({ username: 'root2', password: 'password' })
+                cy.createBlog({
+                    title: 'Cypress alt test blog',
+                    author: 'Cypress',
+                    url: 'www.example.com',
+                    likes: 5
+                })
+            })
+
+            it.only('User cannot delete blog they didn\'t create', function() {
+                cy.login({ username: 'root', password: 'password' })
+                cy.contains('view').click()
+
+                cy.contains('Cypress alt test blog')
+                  .parent()
+                  .get('#delete_button')
+                  .should('not.be.visible')
+            })
+        })
+        
     })
 })

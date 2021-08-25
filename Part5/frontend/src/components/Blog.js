@@ -29,11 +29,11 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
       <Togglable buttonLabel="view" hideButtonLabel="hide" class="blogExpDetails">
         <div className="blogUrl">{blog.url}</div>
         <div className="blogLikes">
-          {blog.likes}
+          <span className="blogLikes_number">{blog.likes}</span>
           <button className="blogLikes_button" onClick={LikesHandler}>like</button>
         </div>
         <div>{blog.user.username}</div>
-        <button style={addedByUser} onClick={handleDelete}>remove</button>
+        <button id="delete_button" style={addedByUser} onClick={handleDelete}>remove</button>
       </Togglable>
     </div>
   )
