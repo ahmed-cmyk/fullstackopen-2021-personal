@@ -9,7 +9,8 @@ const initialState = {
     {content: 'Premature optimization is the root of all evil.', id: getId(), votes: 0}, 
     {content: 'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.', id: getId(), votes: 0}  
   ],
-  notification: ''
+  notification: '',
+  filter: ''
 }
 
 const anecdoteReducer = (state = initialState, action) => {
