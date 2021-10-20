@@ -11,7 +11,7 @@ const Notification = () => {
     borderWidth: 1
   }
 
-  {if(notification.length > 12) {
+  {if(notification) {
     return (
       <div style={style}>
         {notification}
