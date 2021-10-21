@@ -29,13 +29,13 @@ const AnecdoteList = () => {
         <div>
             {anecdoteList.map(anecdote =>
                 <div key={anecdote.id}>
-                <div>
-                    {anecdote.content}
-                </div>
-                <div>
-                    has {anecdote.votes}
-                    <button onClick={() => vote(anecdote.id, anecdote.content)}>vote</button>
-                </div>
+                    <div>
+                        {anecdote.content}
+                    </div>
+                    <div>
+                        has {anecdote.votes}
+                        <button onClick={() => vote(anecdote.id, anecdote.content)}>vote</button>
+                    </div>
                 </div>
             )}
         </div>
