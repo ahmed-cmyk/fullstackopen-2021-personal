@@ -11,9 +11,7 @@ const AnecdoteForm = () => {
         event.preventDefault()
         const content = event.target.anecdote.value
         event.target.anecdote.value = ''
-        const newAnecdote = await anecdoteService.createNew(content)
-        console.log('anecodote', newAnecdote)
-        dispatch(addAnecdote(newAnecdote))
+        dispatch(addAnecdote(content))
       }
 
     return(
