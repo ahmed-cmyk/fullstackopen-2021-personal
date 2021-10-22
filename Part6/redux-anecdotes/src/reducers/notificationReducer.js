@@ -9,17 +9,19 @@ const notificationReducer = (state = '', action) => {
     }
 }
 
-export const setMessage = (content) => {
-    return {
-        type: 'SET_MESSAGE',
-        message: `You voted '${content}'`
-    }
-}
+export const setMessage = (message, time) => {
+    return async dispatch  => {
+        dispatch({
+            type: 'SET_MESSAGE',
+            message
+        })
 
-export const removeMessage = () => {
-    return {
-        type: 'REMOVE_MESSAGE',
-        message: ''
+        setTimeout(() => {
+            dispatch({
+                type: 'REMOVE_MESSAGE',
+                message: ''
+            })    
+        }, time * 1000)
     }
 }
 
