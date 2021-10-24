@@ -5,7 +5,7 @@ import {
   Link, Route, Switch
 } from 'react-router-dom'
 
-import useField from './hooks/useField'
+import useField from './hooks'
 
 const Menu = () => {
   const padding = {
@@ -88,10 +88,11 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const content = useField('text')
-  const author = useField('text')
-  const info = useField('text')
+  const [content, contentReset] = useField('text')
+  const [author, authorReset] = useField('text')
+  const [info, infoReset] = useField('text')
 
+  const {reset, ...contentRest} = content
   const history = useHistory()
 
   const handleSubmit = (e) => {
@@ -108,9 +109,9 @@ const CreateNew = (props) => {
 
   const resetValues = (e) => {
     e.preventDefault()
-    content.reset()
-    author.reset()
-    info.reset()
+    contentReset()
+    authorReset()
+    infoReset()
   }
 
   return (
