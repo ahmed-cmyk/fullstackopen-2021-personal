@@ -1,0 +1,27 @@
+h2 {
+    color: rgb(73, 109, 226);
+}
+
+.notification {
+    background: lightgrey;
+    font-size: 20px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.info {
+    color: green;
+    border: 5px solid green;
+}
+.error {
+    color: red;
+    border: 5px solid red;
+}
+
+.blog-list {
+    padding: 10px 3px;
+    border: 1px solid black;
+    border-radius: 3px;
+    margin: 5px 0;
+}
