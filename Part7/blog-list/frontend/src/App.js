@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
+
 import Notification from './components/Notification'
 import Blogs from './components/Blogs'
 import LoginForm from './components/Login'
-import blogService from './services/blogs'
+import blogReducer from './reducers/blogReducer'
 
 const App = () => {
   const [user, setUser] = useState(null)
@@ -12,17 +13,12 @@ const App = () => {
     if(loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
-      blogService.setToken(user.token)
+      blogReducer.setBlogToken(user.token)
     }
   }, [])
 
   const addUser = credentials => {
     setUser(credentials)
-  }
-
-  const handleLogout = () => {
-    window.localStorage.removeItem('loggedBlogAppUser')
-    setUser(null)
   }
 
   return (

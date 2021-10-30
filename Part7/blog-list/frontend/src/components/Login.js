@@ -3,8 +3,9 @@ import React, { useState } from 'react'
 import blogReducer from '../reducers/blogReducer'
 import loginReducer from '../reducers/loginReducer'
 import notificationReducer from '../reducers/notificationReducer'
+import userReducer from '../reducers/userReducer'
 
-const Login = ({ addUser }) => {
+const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -14,7 +15,7 @@ const Login = ({ addUser }) => {
       const user = await loginReducer.login({
         username, password
       })
-      addUser(user)
+      userReducer.addUser(user)
       blogReducer.setBlogToken(user.token)
       notificationReducer.sendNotification({ type: 'info', message: 'Logged in' })
       setUsername('')
