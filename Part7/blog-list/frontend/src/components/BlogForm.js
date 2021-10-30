@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 
 import { addBlog } from '../reducers/blogReducer'
 import { setNotification, removeNotification } from '../reducers/notificationReducer'
 
-const BlogForm = ({ user }) => {
+const BlogForm = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+
+  const user = useSelector(state => state.user)
 
   const createBlog = async (event) => {
     event.preventDefault()
@@ -19,7 +22,6 @@ const BlogForm = ({ user }) => {
     }
     addBlog(blog)
     setNotification(blog, `a new blog "${blog.title}" by ${user.username} added`)
-    setNotification(notification)
     setTimeout(() => {
       removeNotification()
     }, 5000)

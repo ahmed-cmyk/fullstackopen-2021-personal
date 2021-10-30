@@ -57,19 +57,19 @@ export const setBlogToken = (token) => {
   }
 }
 
-export const deleteBlog = (id) => {
-  return async dispatch => {
-    const response = blogService.deleteBlog(id)
-    if(response.status === 204) {
+// export const deleteBlog = (id) => {
+//   return async dispatch => {
+//     const response = await blogService.deleteBlog(id)
+//     if(response.status === 204) {
 
-    } else {
+//     } else {
 
-    }
-    dispatch({
-      type: 'DELETE_BLOG',
-      data: null
-    })
-  }
-}
+//     }
+//     dispatch({
+//       type: 'DELETE_BLOG',
+//       data: null
+//     })
+//   }
+// }
 
 export default blogReducer

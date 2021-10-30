@@ -2,11 +2,22 @@ import loginService from '../services/login'
 
 const loginReducer = (state = {}, action) => {
   switch(action.type) {
+  case 'CHECK_LOGIN':
+    return action.loggedIn
   case 'LOGIN':
     return action.user
   case 'LOGOUT':
   default:
     return state
+  }
+}
+
+export const checkLogin = () => {
+  return dispatch => {
+    dispatch({
+      type: 'CHECK_LOGIN',
+      loggedIn: window.localStorage.getItem('loggedBlogAppUser')
+    })
   }
 }
 
