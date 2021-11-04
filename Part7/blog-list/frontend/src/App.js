@@ -1,17 +1,20 @@
 import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 
 import Notification from './components/Notification'
 import Blogs from './components/Blogs'
 import LoginForm from './components/Login'
 import blogReducer from './reducers/blogReducer'
-import loginReducer from './reducers/loginReducer'
+import { checkLogin } from './reducers/loginReducer'
 import userReducer from './reducers/userReducer'
 
 let user = null
 
 const App = () => {
+  const dispatch = useDispatch()
   useEffect(() => {
-    const loggedUserJSON = loginReducer.checkLogin()
+    const loggedUserJSON = dispatch(checkLogin())
+    console.log(loggedUserJSON)
     if(loggedUserJSON) {
       user = JSON.parse(loggedUserJSON)
       userReducer.setReducer(user)
