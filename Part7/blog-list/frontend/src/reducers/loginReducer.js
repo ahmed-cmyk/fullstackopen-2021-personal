@@ -1,12 +1,14 @@
+import blogService from '../services/blogs'
 import loginService from '../services/login'
 
-const loginReducer = (state = {}, action) => {
+const loginReducer = (state = null, action) => {
   switch(action.type) {
   case 'CHECK_LOGIN':
     return action.loggedIn
   case 'LOGIN':
     return action.user
   case 'LOGOUT':
+    return null
   default:
     return state
   }
@@ -24,6 +26,8 @@ export const checkLogin = () => {
 export const login = (credentials) => {
   return async dispatch => {
     const user = await loginService.login(credentials)
+    blogService.setToken(user.token)
+    console.log('login details', user)
     window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
     dispatch({
       type: 'LOGIN',
