@@ -16,9 +16,17 @@ const loginReducer = (state = null, action) => {
 
 export const checkLogin = () => {
   return dispatch => {
+    let loggedIn = false
+
+    if(window.localStorage.getItem('loggedBlogAppUser')) {
+      loggedIn = true
+      const userToken = JSON.parse(window.localStorage.getItem('loggedBlogAppUser')).token
+      blogService.setToken(userToken)
+    }
+
     dispatch({
       type: 'CHECK_LOGIN',
-      loggedIn: window.localStorage.getItem('loggedBlogAppUser')
+      loggedIn
     })
   }
 }
@@ -27,7 +35,7 @@ export const login = (credentials) => {
   return async dispatch => {
     const user = await loginService.login(credentials)
     blogService.setToken(user.token)
-    console.log('login details', user)
+    console.log('login details', typeof user)
     window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
     dispatch({
       type: 'LOGIN',

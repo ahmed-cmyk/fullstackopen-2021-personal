@@ -1,4 +1,5 @@
 import blogService from '../services/blogs'
+import { setNotification } from './notificationReducer'
 
 const blogReducer = (state = [], action) => {
   switch(action.type) {
@@ -17,6 +18,7 @@ const blogReducer = (state = [], action) => {
 export const initializeBlogs = () => {
   return async dispatch => {
     const blogs = await blogService.getAll()
+    console.log('blogs found', blogs)
     dispatch({
       type: 'INIT_BLOGS',
       data: blogs
@@ -24,9 +26,10 @@ export const initializeBlogs = () => {
   }
 }
 
-export const addBlog = (content) => {
+export const addBlog = (content, user) => {
   return async dispatch => {
     const newBlog = await blogService.create(content)
+    dispatch(setNotification(`a new blog "${newBlog.title}" by ${user.username} added`, 'info'))
     dispatch({
       type: 'ADD_BLOG',
       data: newBlog

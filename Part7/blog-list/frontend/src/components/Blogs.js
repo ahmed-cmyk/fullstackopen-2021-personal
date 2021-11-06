@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { initializeBlogs } from '../reducers/blogReducer'
 import { logout } from '../reducers/loginReducer'
 
 import Blog from './Blog'
@@ -8,7 +9,13 @@ import Togglable from './Togglable'
 
 const Blogs = ({ user }) => {
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(initializeBlogs())
+  }, [])
+
   const blogs = useSelector(state => state.blogs)
+  console.log('blogs', blogs)
 
   const handleLogout = () => {
     dispatch(logout())
