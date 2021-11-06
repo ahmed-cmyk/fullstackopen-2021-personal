@@ -1,16 +1,17 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import loginReducer from '../reducers/loginReducer'
+import { useDispatch, useSelector } from 'react-redux'
+import { logout } from '../reducers/loginReducer'
 
 import Blog from './Blog'
 import BlogForm from './BlogForm'
 import Togglable from './Togglable'
 
 const Blogs = ({ user }) => {
+  const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
 
   const handleLogout = () => {
-    loginReducer.logout()
+    dispatch(logout())
   }
 
   return (

@@ -1,22 +1,21 @@
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import Notification from './components/Notification'
 import Blogs from './components/Blogs'
 import LoginForm from './components/Login'
 import { setBlogToken } from './reducers/blogReducer'
 import { checkLogin } from './reducers/loginReducer'
-import { setUser } from './reducers/userReducer'
+import { setUser } from './reducers/usersReducer'
 
 let user = null
 
 const App = () => {
   const dispatch = useDispatch()
-  useEffect(() => {
-    const loggedUserJSON = dispatch(checkLogin())
-    console.log(loggedUserJSON)
-    if(loggedUserJSON) {
-      user = JSON.parse(loggedUserJSON)
+  user = useSelector(state => state.login)
+  useEffect((user) => {
+    dispatch(checkLogin())
+    if(user) {
       dispatch(setUser(user))
       dispatch(setBlogToken(user.token))
     }
