@@ -1,23 +1,27 @@
 import React from 'react'
-import Togglable from './Togglable'
+import { useDispatch } from 'react-redux'
 
-const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
+import Togglable from './Togglable'
+import { updateBlog } from '../reducers/blogReducer'
+
+const Blog = ({ blog, user }) => {
+  if(blog === undefined) {
+    return null
+  }
+
   const userAdded = user.username === blog.user.username
   const addedByUser = { display: userAdded ? '' : 'none' }
 
-  const LikesHandler = () => {
+  const dispatch = useDispatch()
+
+  const LikesHandler = async () => {
     const likes = (blog.likes) + 1
-
-    const updatedBlog = {
-      ...blog,
-      likes
-    }
-
-    updateBlog(updatedBlog, blog.id)
+    const updatedBlog = { ...blog, likes }
+    dispatch(updateBlog(updatedBlog))
   }
 
   const handleDelete = () => {
-    deleteBlog(blog, blog.id)
+
   }
 
   return (

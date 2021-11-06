@@ -9,7 +9,7 @@ const BlogForm = () => {
   const [url, setUrl] = useState('')
 
   const dispatch = useDispatch()
-  const user = useSelector(state => state.login)
+  const user = useSelector(state => state.user)
 
   const createBlog = async (event) => {
     event.preventDefault()

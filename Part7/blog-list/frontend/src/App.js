@@ -4,22 +4,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import Notification from './components/Notification'
 import Blogs from './components/Blogs'
 import LoginForm from './components/Login'
-import { setBlogToken } from './reducers/blogReducer'
+import { initializeBlogs } from './reducers/blogReducer'
 import { checkLogin } from './reducers/loginReducer'
-import { setUser } from './reducers/usersReducer'
-
-let user = null
 
 const App = () => {
   const dispatch = useDispatch()
-  user = useSelector(state => state.login)
-  useEffect((user) => {
+  const user = useSelector(state => state.user)
+
+  useEffect(() => {
     dispatch(checkLogin())
-    if(user) {
-      dispatch(setUser(user))
-      dispatch(setBlogToken(user.token))
-    }
-  }, [])
+    dispatch(initializeBlogs())
+  }, [dispatch])
 
   return (
     <div>

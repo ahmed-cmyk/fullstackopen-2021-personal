@@ -7,8 +7,14 @@ const blogReducer = (state = [], action) => {
     return [...state, action.data]
   case 'INIT_BLOGS':
     return action.data
-  case 'UPDATE_BLOG':
-    return [...state, action.data]
+  case 'UPDATE_BLOG': {
+    const updatedBlogList = state.map((blog) => {
+      console.log(blog)
+      return blog.id === action.data.id ? action.data : blog
+    })
+    console.log('updated list', updatedBlogList, action.data)
+    return updatedBlogList
+  }
   case 'SET_TOKEN':
   default:
     return state
@@ -41,15 +47,12 @@ export const addBlog = (content, user) => {
   }
 }
 
-export const updateBlog = (id, updatedContent) => {
+export const updateBlog = (blog) => {
   return async dispatch => {
-    const blogToChange = {
-      ...updatedContent
-    }
-    const changedBlog = await blogService.update(blogToChange, id)
+    const updatedBlog = await blogService.update(blog, blog.id)
     dispatch({
       type: 'UPDATE_BLOG',
-      data: changedBlog
+      data: updatedBlog
     })
   }
 }
