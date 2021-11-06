@@ -14,13 +14,10 @@ const Login = () => {
     console.log(event)
     event.preventDefault()
     try {
-      const user = await dispatch(login({
+      dispatch(login({
         username, password
       }))
-      console.log(user)
       dispatch(setNotification({ type: 'info', message: 'Logged in' }))
-      // setUsername('')
-      // setPassword('')
     } catch (exception) {
       dispatch(setNotification({ type: 'error', message: 'wrong username or password' }))
     }
