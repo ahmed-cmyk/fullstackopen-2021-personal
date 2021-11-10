@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { updateBlog } from '../reducers/blogReducer'
+import { addComment, updateBlog } from '../reducers/blogReducer'
 
 const Blog = () => {
+  const [ comment, setComment ] = useState('')
   const id = useParams().id
   const blog = useSelector(state =>
     state.blogs ?
@@ -20,6 +21,14 @@ const Blog = () => {
     dispatch(updateBlog(updatedBlog))
   }
 
+  const CommentHandler = async () => {
+    console.log('comment', comment)
+    const updatedBlog = { ...blog, comments: blog.comments.concat(comment) }
+    console.log(updatedBlog)
+    dispatch(addComment(updatedBlog))
+    setComment('')
+  }
+
   if(!blog) {
     return null
   }
@@ -33,6 +42,23 @@ const Blog = () => {
         <button className="blogLikes_button" onClick={LikesHandler}>like</button>
       </div>
       <div>added by {blog.author}</div>
+      <h2>comments</h2>
+      <input
+        type="text"
+        id="comment"
+        value={comment}
+        name="comment"
+        onChange={({ target }) => setComment(target.value)}
+      />
+      <button onClick={CommentHandler}>add comment</button>
+      {!blog.comments.length ?
+        <div>No comments...</div> :
+        <ul>
+          {blog.comments.map((comment, index) =>
+            <li key={index}>{comment}</li>
+          )}
+        </ul>
+      }
     </div>
   )
 }

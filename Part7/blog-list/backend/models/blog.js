@@ -22,6 +22,10 @@ const blogSchema = new mongoose.Schema({
         required: true,
         default: 0
     },
+    comments: {
+        type: [String],
+        required: false
+    }
 })
 
 blogSchema.set('toJSON', {
