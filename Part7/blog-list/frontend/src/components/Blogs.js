@@ -10,6 +10,7 @@ const Blogs = ({ user }) => {
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
   console.log('blogs', blogs)
+  console.log('user', user)
 
   const handleLogout = () => {
     dispatch(logout())

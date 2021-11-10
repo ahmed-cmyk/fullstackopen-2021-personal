@@ -9,11 +9,13 @@ const blogReducer = (state = [], action) => {
     return action.data
   case 'UPDATE_BLOG': {
     const updatedBlogList = state.map((blog) => {
-      console.log(blog)
       return blog.id === action.data.id ? action.data : blog
     })
-    console.log('updated list', updatedBlogList, action.data)
     return updatedBlogList
+  }
+  case 'DELETE_BLOG': {
+    const postDeleteList = state.filter(blog => blog.id !== action.data.id)
+    return postDeleteList
   }
   case 'SET_TOKEN':
   default:
@@ -24,7 +26,6 @@ const blogReducer = (state = [], action) => {
 export const initializeBlogs = () => {
   return async dispatch => {
     const blogs = await blogService.getAll()
-    console.log('blogs found', blogs)
     dispatch({
       type: 'INIT_BLOGS',
       data: blogs
@@ -67,19 +68,18 @@ export const setBlogToken = (token) => {
   }
 }
 
-// export const deleteBlog = (id) => {
-//   return async dispatch => {
-//     const response = await blogService.deleteBlog(id)
-//     if(response.status === 204) {
-
-//     } else {
-
-//     }
-//     dispatch({
-//       type: 'DELETE_BLOG',
-//       data: null
-//     })
-//   }
-// }
+export const deleteBlog = (id) => {
+  return async dispatch => {
+    try {
+      const response = await blogService.deleteBlog(id)
+      dispatch({
+        type: 'DELETE_BLOG',
+        data: response.data
+      })
+    } catch(exception) {
+      dispatch(setNotification({ message: 'Error occured. Delete request failed', type: 'error' }))
+    }
+  }
+}
 
 export default blogReducer

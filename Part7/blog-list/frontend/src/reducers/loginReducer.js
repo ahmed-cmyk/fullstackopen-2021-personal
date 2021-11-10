@@ -1,10 +1,10 @@
 import blogService from '../services/blogs'
 import loginService from '../services/login'
 
-const loginReducer = (state = null, action) => {
+const loginReducer = (state = {}, action) => {
   switch(action.type) {
   case 'CHECK_LOGIN':
-    return action.loggedIn
+    return action.user
   case 'LOGIN':
     return action.user
   case 'LOGOUT':
@@ -16,17 +16,19 @@ const loginReducer = (state = null, action) => {
 
 export const checkLogin = () => {
   return dispatch => {
-    let loggedIn = false
+    let user = { loggedIn: false, username: null }
 
     if(window.localStorage.getItem('loggedBlogAppUser')) {
-      loggedIn = true
-      const userToken = JSON.parse(window.localStorage.getItem('loggedBlogAppUser')).token
+      const localUserItem = JSON.parse(window.localStorage.getItem('loggedBlogAppUser'))
+      const userToken = localUserItem.token
+      user.loggedIn = true
+      user.username = localUserItem.username
       blogService.setToken(userToken)
     }
 
     dispatch({
       type: 'CHECK_LOGIN',
-      loggedIn
+      user
     })
   }
 }
@@ -35,8 +37,8 @@ export const login = (credentials) => {
   return async dispatch => {
     const user = await loginService.login(credentials)
     blogService.setToken(user.token)
-    console.log('login details', typeof user)
     window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
+    user['loggedIn'] = true
     dispatch({
       type: 'LOGIN',
       user
