@@ -1,16 +1,16 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router'
+import { useDispatch, useSelector } from 'react-redux'
 
-import Togglable from './Togglable'
 import { updateBlog } from '../reducers/blogReducer'
 
-const Blog = ({ blog, user }) => {
-  if(blog === undefined) {
-    return null
-  }
-
-  const userAdded = user.username === blog.user.username
-  const addedByUser = { display: userAdded ? '' : 'none' }
+const Blog = () => {
+  const id = useParams().id
+  const blog = useSelector(state =>
+    state.blogs ?
+      state.blogs.find(blog => blog.id === id) :
+      null
+  )
 
   const dispatch = useDispatch()
 
@@ -20,25 +20,19 @@ const Blog = ({ blog, user }) => {
     dispatch(updateBlog(updatedBlog))
   }
 
-  const handleDelete = () => {
-
+  if(!blog) {
+    return null
   }
 
   return (
     <div className="blogDetails">
-      <div>
-        <span className="blogTitle">{blog.title}</span>
-        <span className="blogAuthor">{blog.author}</span>
+      <h2 className="blogTitle">{blog.title}</h2>
+      <a href={blog.url} className="blogUrl">{blog.url}</a>
+      <div className="blogLikes">
+        <span className="blogLikes_number">{blog.likes}</span>
+        <button className="blogLikes_button" onClick={LikesHandler}>like</button>
       </div>
-      <Togglable buttonLabel="view" hideButtonLabel="hide" class="blogExpDetails">
-        <div className="blogUrl">{blog.url}</div>
-        <div className="blogLikes">
-          <span className="blogLikes_number">{blog.likes}</span>
-          <button className="blogLikes_button" onClick={LikesHandler}>like</button>
-        </div>
-        <div>{blog.user.username}</div>
-        <button id="delete_button" style={addedByUser} onClick={handleDelete}>remove</button>
-      </Togglable>
+      <div>added by {blog.author}</div>
     </div>
   )
 }

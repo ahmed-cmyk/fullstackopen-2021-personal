@@ -19,9 +19,22 @@ h2 {
     border: 5px solid red;
 }
 
-.blog-list {
-    padding: 10px 3px;
-    border: 1px solid black;
-    border-radius: 3px;
+.spacing {
+    padding: 0 3px;
+}
+
+.blog_banner {
+    background-color: #d3d3d3;
+    padding: 5px;
+}
+
+.blog_list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.blog_list_item {
+    padding: 5px;
     margin: 5px 0;
+    border: 1px solid #000;
 }

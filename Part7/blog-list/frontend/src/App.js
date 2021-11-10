@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
 
 import Notification from './components/Notification'
-import Blogs from './components/Blogs'
+import Blog from './components/Blog'
+import BlogHome from './components/BlogHome'
+import BlogList from './components/BlogList'
 import LoginForm from './components/Login'
 import User from './components/User'
 import Users from './components/Users'
@@ -28,8 +30,11 @@ const App = () => {
       {user === null || !user.loggedIn ?
         <LoginForm  /> :
         <div>
-          <Blogs user={user} />
+          <BlogHome user={user} />
           <Routes>
+            <Route path="/" element={<BlogList />} />
+            <Route path="/blogs/:id" element={<Blog />} />
+            <Route path="/blogs" element={<BlogList />} />
             <Route path="/users/:id" element={<User />} />
             <Route path="/users" element={<Users />} />
           </Routes>
