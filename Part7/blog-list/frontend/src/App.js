@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Route, Routes } from 'react-router-dom'
 
 import Notification from './components/Notification'
 import Blogs from './components/Blogs'
 import LoginForm from './components/Login'
+import User from './components/User'
 import Users from './components/Users'
 import { initializeBlogs } from './reducers/blogReducer'
 import { checkLogin } from './reducers/loginReducer'
@@ -27,7 +29,10 @@ const App = () => {
         <LoginForm  /> :
         <div>
           <Blogs user={user} />
-          <Users />
+          <Routes>
+            <Route path="/users/:id" element={<User />} />
+            <Route path="/users" element={<Users />} />
+          </Routes>
         </div>
       }
     </div>
