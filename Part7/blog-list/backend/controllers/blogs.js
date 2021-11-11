@@ -43,8 +43,8 @@ blogRouter.post('/', async (request, response) => {
 
 blogRouter.put('/:id/comments', async (request, response) => {
     const body = request.body
-    
-    if(body.comments.length === 0) {
+
+    if(!body.comments) {
         return response.status(400).end()
     }
 

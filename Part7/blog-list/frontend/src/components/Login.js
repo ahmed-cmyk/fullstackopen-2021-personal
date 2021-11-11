@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch } from 'react-redux'
+import useField from '../hooks'
 
 import { login } from '../reducers/loginReducer'
 import { setNotification } from '../reducers/notificationReducer'
@@ -7,17 +8,20 @@ import { setNotification } from '../reducers/notificationReducer'
 const Login = () => {
   const dispatch = useDispatch()
 
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [ username, usernameReset ] = useField('text')
+  const [ password, passwordReset ] = useField('text')
 
   const handleLogin = async (event) => {
     console.log(event)
     event.preventDefault()
     try {
       dispatch(login({
-        username, password
+        username: username.value,
+        password: password.value
       }))
       dispatch(setNotification({ type: 'info', message: 'Logged in' }))
+      usernameReset()
+      passwordReset()
     } catch (exception) {
       dispatch(setNotification({ type: 'error', message: 'wrong username or password' }))
     }
@@ -26,27 +30,8 @@ const Login = () => {
   return (
     <div>
       <h2>log into application</h2>
-
-      <div>
-                    username
-        <input
-          id='username'
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-                    password
-        <input
-          id='password'
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
+      <div>username <input { ...username } /></div>
+      <div>password <input { ...password } /></div>
       <button id="login-button" onClick={handleLogin}>login</button>
     </div>
   )

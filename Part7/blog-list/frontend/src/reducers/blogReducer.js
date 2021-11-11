@@ -12,13 +12,13 @@ const blogReducer = (state = [], action) => {
     const updatedBlogList = state.map((blog) => {
       return blog.id === action.data.id ? action.data : blog
     })
-    console.log('updated list', updatedBlogList)
     return updatedBlogList
   }
   case 'DELETE_BLOG': {
     const postDeleteList = state.filter(blog => blog.id !== action.data.id)
     return postDeleteList
   }
+  case 'FAILED':
   case 'SET_TOKEN':
   default:
     return state
@@ -62,11 +62,10 @@ export const updateBlog = (blog) => {
 
 export const addComment = (blog) => {
   return async dispatch => {
-    const updatedBlog = await blogService.addComment(blog, blog.id)
-    console.log('updated blog', updatedBlog)
+    await blogService.addComment(blog, blog.id)
     dispatch({
       type: 'ADD_COMMENT',
-      data: updatedBlog
+      data: blog
     })
   }
 }

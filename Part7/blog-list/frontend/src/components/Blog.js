@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useParams } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { addComment, updateBlog } from '../reducers/blogReducer'
+import useField from '../hooks'
 import BlogComments from './BlogComments'
+import { setNotification } from '../reducers/notificationReducer'
 
 const Blog = () => {
-  const [ comment, setComment ] = useState('')
+  const [ comment, commentReset ] = useField('text')
   const id = useParams().id
   const blog = useSelector(state =>
     state.blogs ?
@@ -23,11 +25,14 @@ const Blog = () => {
   }
 
   const CommentHandler = async () => {
-    console.log('comment', comment)
-    const updatedBlog = { ...blog, comments: blog.comments.concat(comment) }
-    console.log(updatedBlog)
-    dispatch(addComment(updatedBlog))
-    setComment('')
+    if(comment.value) {
+      const updatedBlog = { ...blog, comments: blog.comments.concat(comment.value) }
+      dispatch(addComment(updatedBlog))
+      dispatch(setNotification({ message: `New comment "${comment.value}" was added`, type: 'info' }))
+      commentReset()
+    } else {
+      dispatch(setNotification({ message: 'Comment field cannot be empty', type: 'error' }))
+    }
   }
 
   if(!blog) {
@@ -44,13 +49,7 @@ const Blog = () => {
       </div>
       <div>added by {blog.author}</div>
       <h2>comments</h2>
-      <input
-        type="text"
-        id="comment"
-        value={comment}
-        name="comment"
-        onChange={({ target }) => setComment(target.value)}
-      />
+      <input { ...comment } />
       <button onClick={CommentHandler}>add comment</button>
       <BlogComments blog={blog} />
     </div>
