@@ -17,11 +17,11 @@ const Blogs = ({ user }) => {
 
   return (
     <div>
-      <div className="blog_banner">
-        <Link className="spacing" to="/blogs">blogs</Link>
-        <Link className="spacing" to="/users">users</Link>
-        <span className="spacing">{user.username} logged in</span>
-        <span className="spacing">
+      <div className="bg-blue-300	p-5">
+        <Link className="p-2" to="/blogs">blogs</Link>
+        <Link className="p-2" to="/users">users</Link>
+        <span className="p-2 text-blue-700">{user.username} logged in</span>
+        <span className="p-2 border-solid border-4 border-light-blue-500">
           <button onClick={handleLogout}>logout</button>
         </span>
       </div>

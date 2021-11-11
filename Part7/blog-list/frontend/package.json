@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^6.4.0",
     "@testing-library/user-event": "^12.6.3",
     "axios": "^0.21.1",
     "eslint-plugin-cypress": "^2.12.1",
@@ -16,10 +17,10 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "BROWSER=none react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "BROWSER=none craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "craco eject",
     "eslint": "eslint .",
     "eslint-fix-all": "eslint . --fix",
     "unit-tests": "CI=true npm test",
@@ -47,7 +48,10 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
+    "autoprefixer": "^9.8.8",
     "cypress": "^8.3.0",
-    "eslint-plugin-jest": "^24.4.0"
+    "eslint-plugin-jest": "^24.4.0",
+    "postcss": "^7.0.39",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"
   }
 }

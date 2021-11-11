@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import useField from '../hooks'
 
 import { addBlog } from '../reducers/blogReducer'
 
 const BlogForm = () => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const [ title, titleReset ] = useField('text')
+  const [ author, authorReset ] = useField('text')
+  const [ url, urlReset ] = useField('text')
 
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
@@ -21,45 +22,20 @@ const BlogForm = () => {
       likes: 0
     }
     dispatch(addBlog(blog, user))
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    titleReset()
+    authorReset()
+    urlReset()
   }
 
   return (
     <form id="blogForm" onSubmit={createBlog}>
       <h2>create</h2>
-      <div>
-                title:
-        <input
-          id="title"
-          type="text"
-          value={title}
-          name="Title"
-          onChange={({ target }) => setTitle(target.value)}
-        />
-      </div>
-      <div>
-                author:
-        <input
-          id="author"
-          type="text"
-          value={author}
-          name="Author"
-          onChange={({ target }) => setAuthor(target.value)}
-        />
-      </div>
-      <div>
-                url:
-        <input
-          id="url"
-          type="text"
-          value={url}
-          name="Url"
-          onChange={({ target }) => setUrl(target.value)}
-        />
-      </div>
-      <button className="submitButton" type="submit">create</button>
+      <div>title: <input className="border-2 border-solid border-blue-300 rounded-md p-1" { ...title } /></div>
+      <div>author: <input className="border-2 border-solid border-blue-300 rounded-md p-1" { ...author } /></div>
+      <div>url: <input className="border-2 border-solid border-blue-300 rounded-md p-1" { ...url } /></div>
+      <span className="border-2 border-solid border-blue-400 rounded-md p-1 bg-blue-300 text-white my-2">
+        <button className="submitButton" type="submit">create</button>
+      </span>
     </form>
   )
 }

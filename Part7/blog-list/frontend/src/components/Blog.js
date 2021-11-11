@@ -45,12 +45,16 @@ const Blog = () => {
       <a href={blog.url} className="blogUrl">{blog.url}</a>
       <div className="blogLikes">
         <span className="blogLikes_number">{blog.likes}</span>
-        <button className="blogLikes_button" onClick={LikesHandler}>like</button>
+        <span className="border-2 border-solid border-blue-400 rounded-md p-1 bg-blue-300 text-white">
+          <button className="blogLikes_button" onClick={LikesHandler}>like</button>
+        </span>
       </div>
       <div>added by {blog.author}</div>
       <h2>comments</h2>
-      <input { ...comment } />
-      <button onClick={CommentHandler}>add comment</button>
+      <input className="border-2 border-solid border-blue-300 rounded-md py-2 px-6" { ...comment } />
+      <span className="border-2 border-solid border-blue-400 rounded-md p-3 bg-blue-300 text-white">
+        <button onClick={CommentHandler}>add comment</button>
+      </span>
       <BlogComments blog={blog} />
     </div>
   )
