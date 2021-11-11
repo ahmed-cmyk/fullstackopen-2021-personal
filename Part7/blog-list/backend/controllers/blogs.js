@@ -43,7 +43,7 @@ blogRouter.post('/', async (request, response) => {
 
 blogRouter.put('/:id/comments', async (request, response) => {
     const body = request.body
-    console.log('body',body)
+    
     if(body.comments.length === 0) {
         return response.status(400).end()
     }
@@ -56,7 +56,7 @@ blogRouter.put('/:id/comments', async (request, response) => {
         comments: body.comments
     }
 
-    const returnedBlog = await Blog.findByIdAndUpdate(request.params.id, newBlog)
+    const returnedBlog = await Blog.findByIdAndUpdate(request.params.id, newBlog, { new: true })
 
     if(returnedBlog) {
         response.json(returnedBlog.toJSON())
@@ -72,7 +72,8 @@ blogRouter.put('/:id', async (request, response) => {
         title: body.title,
         author: body.author,
         url: body.url,
-        likes: body.likes
+        likes: body.likes,
+        comments: body.comments
     }
 
     const returnedBlog = await Blog.findByIdAndUpdate(request.params.id, newBlog, { new: true })

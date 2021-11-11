@@ -3,6 +3,7 @@ import { useParams } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { addComment, updateBlog } from '../reducers/blogReducer'
+import BlogComments from './BlogComments'
 
 const Blog = () => {
   const [ comment, setComment ] = useState('')
@@ -51,14 +52,7 @@ const Blog = () => {
         onChange={({ target }) => setComment(target.value)}
       />
       <button onClick={CommentHandler}>add comment</button>
-      {!blog.comments.length ?
-        <div>No comments...</div> :
-        <ul>
-          {blog.comments.map((comment, index) =>
-            <li key={index}>{comment}</li>
-          )}
-        </ul>
-      }
+      <BlogComments blog={blog} />
     </div>
   )
 }

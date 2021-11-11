@@ -34,11 +34,12 @@ const update = async (updatedBlog, id) => {
 
 const addComment = async (updatedBlog, id) => {
   const config = setConfig()
-  console.log(baseUrl)
   const blogUrl = baseUrl + `/${id}/comments`
 
-  const response = await axios.put(blogUrl, updatedBlog, config)
-  return response.data
+  await axios.put(blogUrl, updatedBlog, config)
+    .then(data => {
+      return data
+    })
 }
 
 const deleteBlog = async (id) => {
